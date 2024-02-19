@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NoteApp.Server.Entities;
+using NoteApp.Server.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +12,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<NoteAppContext>(
-    option => option.UseSqlServer(builder.Configuration.GetConnectionString("NoteAppConnectionString"))
-    );
+    option => option.UseSqlServer(builder.Configuration.GetConnectionString("NoteAppConnectionString")));
+
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 var app = builder.Build();
 
@@ -25,6 +27,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
