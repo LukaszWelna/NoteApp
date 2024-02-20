@@ -27,10 +27,6 @@ namespace NoteApp.Server.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateNoteAsync([FromBody] CreateNoteDto createNoteDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             var noteId = await _service.CreateNoteAsync(createNoteDto);
 
             return Created($"/api/notes/{noteId}", null);
@@ -48,11 +44,6 @@ namespace NoteApp.Server.Controllers
         public async Task<ActionResult> UpdateNoteByIdAsync([FromRoute] int id, 
             [FromBody] UpdateNoteDto updateNoteDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             await _service.UpdateNoteByIdAsync(id, updateNoteDto);
 
             return NoContent();

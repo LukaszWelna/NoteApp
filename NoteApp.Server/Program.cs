@@ -23,6 +23,7 @@ builder.Services.AddDbContext<NoteAppContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("NoteAppConnectionString")));
 
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddScoped<RequestTimeMiddleware>();
 builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -41,6 +42,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseMiddleware<RequestTimeMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
