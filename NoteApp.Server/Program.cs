@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using NoteApp.Server.Entities;
 using NoteApp.Server.Middleware;
+using NoteApp.Server.Services;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<NoteAppContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("NoteAppConnectionString")));
 
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddScoped<INoteService, NoteService>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
@@ -25,7 +29,10 @@ app.UseStaticFiles();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "NoteApp API");
+    });
 }
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
