@@ -23,5 +23,13 @@ namespace NoteApp.Server.Controllers
 
             return Ok(notesDtos);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateNoteAsync([FromBody] CreateNoteDto createNoteDto)
+        {
+            var noteId = await _service.CreateNoteAsync(createNoteDto);
+
+            return Created($"/api/notes/{noteId}", null);
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace NoteApp.Server.Profiles
         public NoteMappingProfile()
         {
             CreateMap<Note, NoteDto>();
+            CreateMap<CreateNoteDto, Note>();
         }
     }
 }

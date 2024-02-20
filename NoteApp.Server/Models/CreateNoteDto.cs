@@ -1,6 +1,6 @@
 ﻿namespace NoteApp.Server.Models
 {
-    public class NoteDto
+    public class CreateNoteDto
     {
         public string Title { get; set; }
         public string Content { get; set; }

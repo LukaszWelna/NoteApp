@@ -8,6 +8,7 @@ namespace NoteApp.Server.Services
     public interface INoteService
     {
         public Task<IEnumerable<NoteDto>> GetAllAsync();
+        public Task<int> CreateNoteAsync(CreateNoteDto createNoteDto);
     }
     public class NoteService : INoteService
     {
@@ -28,6 +29,16 @@ namespace NoteApp.Server.Services
             var notesDtos = _mapper.Map<List<NoteDto>>(notes);
 
             return notesDtos;
+        }
+
+        public async Task<int> CreateNoteAsync(CreateNoteDto createNoteDto)
+        {
+            var note = _mapper.Map<Note>(createNoteDto);
+            note.UserId = 1;
+            await _dbContext.Notes.AddAsync(note);
+            await _dbContext.SaveChangesAsync();
+
+            return note.Id;
         }
     }
 }
