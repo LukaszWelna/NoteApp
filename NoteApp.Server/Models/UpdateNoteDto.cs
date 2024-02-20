@@ -2,7 +2,7 @@
 
 namespace NoteApp.Server.Models
 {
-    public class CreateNoteDto
+    public class UpdateNoteDto
     {
         [Required]
         [MaxLength(50)]

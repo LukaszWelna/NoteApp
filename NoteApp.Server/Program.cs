@@ -1,10 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+using NLog.Web;
 using NoteApp.Server.Entities;
 using NoteApp.Server.Middleware;
 using NoteApp.Server.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add NLog
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(LogLevel.Trace);
+builder.Host.UseNLog();
 
 // Add services to the container.
 
