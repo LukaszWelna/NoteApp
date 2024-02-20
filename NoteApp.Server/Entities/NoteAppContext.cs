@@ -15,11 +15,19 @@ namespace NoteApp.Server.Entities
         {
             modelBuilder.Entity<User>(eb =>
             {
+                eb.Property(u => u.Email)
+                .IsRequired();
+
                 eb.Property(u => u.FirstName)
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
 
                 eb.Property(u => u.LastName)
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
+
+                eb.Property(u => u.PasswordHash)
+                .IsRequired();
 
                 eb.HasMany(u => u.Notes)
                 .WithOne(n => n.User)
@@ -29,7 +37,8 @@ namespace NoteApp.Server.Entities
             modelBuilder.Entity<Note>(eb =>
             {
                 eb.Property(n => n.Title)
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
 
                 eb.Property(n => n.Content)
                 .HasMaxLength(400);
