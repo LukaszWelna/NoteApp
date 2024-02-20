@@ -5,7 +5,7 @@ namespace NoteApp.Server.Middleware
 {
     public class ErrorHandlingMiddleware : IMiddleware
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<ErrorHandlingMiddleware> _logger;
 
         public ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger)
         {
@@ -20,7 +20,7 @@ namespace NoteApp.Server.Middleware
             }
             catch (NotFoundException notFoundException)
             {
-                context.Response.StatusCode = 500;
+                context.Response.StatusCode = 404;
                 await context.Response.WriteAsync(notFoundException.Message);
             }
             catch (Exception e)

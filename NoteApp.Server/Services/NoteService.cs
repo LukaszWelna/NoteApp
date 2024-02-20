@@ -18,7 +18,7 @@ namespace NoteApp.Server.Services
     {
         private readonly NoteAppContext _dbContext;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
+        private readonly ILogger<NoteService> _logger;
         public NoteService(NoteAppContext dbContext, IMapper mapper, ILogger<NoteService> logger)
         {
             _dbContext = dbContext;
