@@ -10,6 +10,7 @@ namespace NoteApp.Server.Profiles
         {
             CreateMap<Note, NoteDto>();
             CreateMap<CreateNoteDto, Note>();
+            CreateMap<RegisterUserDto, User>();
         }
     }
 }
