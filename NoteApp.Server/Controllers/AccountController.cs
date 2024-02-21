@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NoteApp.Server.Entities;
 using NoteApp.Server.Models;
 using NoteApp.Server.Services;
 
@@ -22,5 +23,14 @@ namespace NoteApp.Server.Controllers
 
             return Ok();
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> LoginAsync([FromBody] LoginUserDto loginUserDto)
+        {
+            string token = await _service.LoginAsync(loginUserDto);
+
+            return Ok(token);
+        }
+
     }
 }
