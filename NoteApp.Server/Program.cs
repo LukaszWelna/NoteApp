@@ -1,10 +1,12 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
 using NoteApp.Server;
+using NoteApp.Server.Authorization;
 using NoteApp.Server.Entities;
 using NoteApp.Server.Middleware;
 using NoteApp.Server.Models;
@@ -58,11 +60,24 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
+builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+builder.Services.AddHttpContextAccessor();
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontEndClient", corsBuilder =>
+        corsBuilder.AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithOrigins(builder.Configuration["AllowedOrigins"])
+        );
+});
+*/
 
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
+//app.UseCors("FrontEndClient");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

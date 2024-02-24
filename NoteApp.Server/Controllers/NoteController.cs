@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NoteApp.Server.Entities;
 using NoteApp.Server.Models;
 using NoteApp.Server.Services;
+using System.Security.Claims;
 
 namespace NoteApp.Server.Controllers
 {
     [ApiController]
     [Route("api/notes")]
+    [Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteService _service;
