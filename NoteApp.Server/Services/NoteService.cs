@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using NoteApp.Server.Authorization;
 using NoteApp.Server.Entities;
 using NoteApp.Server.Exceptions;
 using NoteApp.Server.Models;
+using System.Security.Claims;
+using static Azure.Core.HttpHeader;
 
 namespace NoteApp.Server.Services
 {
@@ -19,17 +23,23 @@ namespace NoteApp.Server.Services
         private readonly NoteAppContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<NoteService> _logger;
-        public NoteService(NoteAppContext dbContext, IMapper mapper, ILogger<NoteService> logger)
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IUserContextService _userContextService;
+        public NoteService(NoteAppContext dbContext, IMapper mapper, ILogger<NoteService> logger,
+            IAuthorizationService authorizationService, IUserContextService userContextService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
+            _authorizationService = authorizationService;
+            _userContextService = userContextService;
         }
         
         public async Task<IEnumerable<NoteDto>> GetAllAsync()
         {
             var notes = await _dbContext
                 .Notes
+                .Where(n => n.UserId == _userContextService.GetUserId)
                 .ToListAsync();
 
             var notesDtos = _mapper.Map<List<NoteDto>>(notes);
@@ -40,7 +50,7 @@ namespace NoteApp.Server.Services
         public async Task<int> CreateNoteAsync(CreateNoteDto createNoteDto)
         {
             var note = _mapper.Map<Note>(createNoteDto);
-            note.UserId = 1;
+            note.UserId = _userContextService.GetUserId;
             await _dbContext.Notes.AddAsync(note);
             await _dbContext.SaveChangesAsync();
 
@@ -60,6 +70,14 @@ namespace NoteApp.Server.Services
                 throw new NotFoundException("Note not found");
             }
 
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, note,
+                new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
+
             _dbContext.Notes.Remove(note);
             await _dbContext.SaveChangesAsync();
         }
@@ -73,6 +91,14 @@ namespace NoteApp.Server.Services
             if (note == null)
             {
                 throw new NotFoundException("Note not found");
+            }
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, note,
+                new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
             }
 
             note.Title = updateNoteDto.Title;

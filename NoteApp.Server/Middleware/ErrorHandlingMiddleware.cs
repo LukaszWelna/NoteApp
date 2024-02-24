@@ -18,6 +18,10 @@ namespace NoteApp.Server.Middleware
             {
                 await next.Invoke(context);
             }
+            catch(ForbidException forbidException)
+            {
+                context.Response.StatusCode = 403;
+            }
             catch (NotFoundException notFoundException)
             {
                 context.Response.StatusCode = 404;

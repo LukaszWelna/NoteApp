@@ -63,6 +63,7 @@ namespace NoteApp.Server.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
             var expiresAt = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
 
             var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer,
