@@ -39,7 +39,7 @@ namespace NoteApp.Server.Services
         {
             var notes = await _dbContext
                 .Notes
-                .Where(n => n.UserId == _userContextService.GetUserId)
+                .Where(n => n.UserId == 2)
                 .ToListAsync();
 
             var notesDtos = _mapper.Map<List<NoteDto>>(notes);
