@@ -2,10 +2,10 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useEffect, useState } from 'react'
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Dashboard from './components/Dashboard'
-import Home from './components/Home'
+import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
+import Dashboard from './components/Dashboard/Dashboard'
+import Home from './components/Home/Home'
 
 
 function App() {

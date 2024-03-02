@@ -63,7 +63,7 @@ builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator
 builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddHttpContextAccessor();
-/*builder.Services.AddCors(options =>
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontEndClient", corsBuilder =>
         corsBuilder.AllowAnyMethod()
@@ -71,13 +71,12 @@ builder.Services.AddHttpContextAccessor();
         .WithOrigins(builder.Configuration["AllowedOrigins"])
         );
 });
-*/
 
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
-//app.UseCors("FrontEndClient");
+app.UseCors("FrontEndClient");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

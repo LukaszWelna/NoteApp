@@ -9,22 +9,31 @@ namespace NoteApp.Server.Models.Validators
         {
             RuleFor(u => u.Email)
                 .NotEmpty()
-                .EmailAddress();
+                .WithMessage("The \"Email\" field cannot be empty.")
+                .EmailAddress()
+                .WithMessage("The \"Email password\" field does not contain a valid email address.");
 
             RuleFor(u => u.FirstName)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("The \"First name\" field cannot be empty.");
 
             RuleFor(u => u.LastName)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("The \"Last name\" field cannot be empty.");
 
             RuleFor(u => u.Password)
                 .NotEmpty()
-                .MinimumLength(8);
+                .WithMessage("The \"Password\" field cannot be empty.")
+                .MinimumLength(8)
+                .WithMessage("The \"Password\" field must contain at least 8 characters.");
 
             RuleFor(u => u.ConfirmPassword)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("The \"Confirm password\" field cannot be empty.");
 
-            RuleFor(u => u.Password).Equal(u => u.ConfirmPassword);
+            RuleFor(u => u.Password)
+                .Equal(u => u.ConfirmPassword)
+                .WithMessage("The \"Confirm password\" field must match the \"Password\" field.");
 
             RuleFor(u => u.Email)
                 .Custom((value, context) =>
@@ -33,9 +42,10 @@ namespace NoteApp.Server.Models.Validators
 
                     if (emailTaken)
                     {
-                        context.AddFailure("Email", "Email is already taken");
+                        context.AddFailure("Email", "The Email address is already taken");
                     }
                 });
+            
         }
     }
 }
