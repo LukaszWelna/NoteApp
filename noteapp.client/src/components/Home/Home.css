@@ -1,0 +1,85 @@
+
+.center-text {
+    text-align: center;
+}
+
+.login-div {
+    background-color: white;
+}
+
+.login-button {
+    background-color: #40C4FF;
+    border-color: #40C4FF;
+}
+
+    .login-button:hover {
+        background-color: #00B0FF !important;
+        border-color: #40C4FF !important;
+    }
+
+    .login-button:focus,
+    .login-button:active {
+        background-color: #0091EA !important;
+        border-color: #40C4FF !important;
+    }
+
+.link-info:hover {
+    color: #00ACC1 !important;
+}
+
+.modal-body {
+    padding: 0 !important;
+}
+
+.signup-button, signup-button:disabled {
+    background-color: #4CAF50 !important;
+    border-color: #4CAF50;
+}
+
+.signup-button:hover {
+    background-color: #43A047 !important;
+    border-color: #4CAF50 !important;
+}
+
+.signup-button:focus,
+.signup-button:active {
+    background-color: #388E3C !important;
+    border-color: #4CAF50 !important;
+}
+
+.signup-button {
+    --mdb-btn-box-shadow: 0 4px 9px -4px #388E3C;
+    --mdb-btn-box-shadow-state: 0 8px 9px -4px rgba(129, 199, 132, 0.3), 0 4px 18px 0 rgba(129, 199, 132, 0.2);
+}
+
+.not-display {
+    display: none;
+}
+
+.register-errors {
+    text-align: left;
+    background-color: #FFCDD2;
+    margin-bottom: 15px;
+    padding: 10px 0px 10px 0px;
+    border-radius: 5px;
+}
+
+.register-errors ul {
+    margin-bottom: 0;
+}
+
+.validation-errors {
+    font-size: 0.9rem;
+    text-align: left;
+    margin-top: -20px;
+    margin-left: 2px;
+}
+
+.login-errors {
+    text-align: center;
+    background-color: #FFCDD2;
+    margin-bottom: 15px;
+    padding: 10px 0px 10px 0px;
+    border-radius: 5px;
+}
+
