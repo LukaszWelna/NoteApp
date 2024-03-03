@@ -1,32 +1,31 @@
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import { useEffect, useState } from 'react'
-import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Header from './components/Header/Header'
-import Footer from './components/Footer/Footer'
-import Dashboard from './components/Dashboard/Dashboard'
-import Home from './components/Home/Home'
+import './App.css';
+import Dashboard from './components/Dashboard/Dashboard';
+import Home from './components/Home/Home';
+import Layout from './components/Layout/Layout';
+import Missing from './components/Missing/Missing';
+import RequireAuth from './components/RequireAuth/RequireAuth';
+import Registered from './components/Registered/Registered';
+import { Route, Routes } from 'react-router-dom';
 
-
-function App() {
-
-    /*const [token, setToken] = useState();
-
-    if (!token) {
-        return <Login setToken={setToken} />
-    }*/
+const App = () => {
     
     return (
         <div className="wrapper">
-            <Header />
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Home/>} />
-                    <Route path="/home" element={<Home/>} />
-                    <Route path="/dashboard" element={<Dashboard/>} />
-                </Routes>
-            </BrowserRouter>
-            <Footer />
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    {/* Public routes */}
+                    <Route path="/" element={<Home />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/registered" element={<Registered />} />
+                    {/* Protected routes */}
+                    <Route element={<RequireAuth />}>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                    </Route>
+                    {/* Catch all 404 */}
+                    <Route path="/*" element={<Missing />} />
+                </Route>
+            </Routes>
         </div>
     );    
 }

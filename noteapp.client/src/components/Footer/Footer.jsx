@@ -1,6 +1,7 @@
 import React from 'react'
 import './Footer.css'
-export default function Footer() {
+
+const Footer = () => {
 
     const currentYear = new Date().getFullYear();
 
@@ -12,3 +13,5 @@ export default function Footer() {
         </div>
     );
 }
+
+export default Footer

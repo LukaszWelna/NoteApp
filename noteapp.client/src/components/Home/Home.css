@@ -12,16 +12,16 @@
     border-color: #40C4FF;
 }
 
-    .login-button:hover {
-        background-color: #00B0FF !important;
-        border-color: #40C4FF !important;
-    }
+.login-button:hover {
+    background-color: #00B0FF !important;
+    border-color: #40C4FF !important;
+}
 
-    .login-button:focus,
-    .login-button:active {
-        background-color: #0091EA !important;
-        border-color: #40C4FF !important;
-    }
+.login-button:focus,
+.login-button:active {
+    background-color: #0091EA !important;
+    border-color: #40C4FF !important;
+}
 
 .link-info:hover {
     color: #00ACC1 !important;
