@@ -10,7 +10,7 @@ namespace NoteApp.Server.Controllers
 {
     [ApiController]
     [Route("api/notes")]
-    //[Authorize]
+    [Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteService _service;

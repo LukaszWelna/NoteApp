@@ -5,9 +5,8 @@ import {
     MDBCard,
     MDBCardBody,
     MDBCardTitle,
-    MDBCardText,
-    MDBBtn,
-    MDBCol
+    MDBCol,
+    MDBCardText
 } from 'mdb-react-ui-kit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,10 +14,9 @@ import EditIcon from '@mui/icons-material/Edit';
 
 function Note(props) {
 
-    /*function handleDelete() {
-        props.onDelete(props.id);
+    const handleDelete = () => {
+        props.handleDelete(props.id);
     }
-    */
 
     return (
         <MDBCol className='px-2'>
@@ -33,7 +31,7 @@ function Note(props) {
                         </MDBCardText>
                         <MDBCol className='d-flex justify-content-end note-icons'>
                             <button className='button-edit me-2 p-0'><EditIcon /></button>
-                            <button className='button-delete p-0'><DeleteIcon /></button>
+                            <button className='button-delete p-0' type='button' onClick={handleDelete}><DeleteIcon /></button>
                         </MDBCol>
                  </form>        
                 </MDBCardBody>
@@ -43,8 +41,10 @@ function Note(props) {
 }
 
 Note.propTypes = {
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired
+    content: PropTypes.string.isRequired,
+    handleDelete: PropTypes.func.isRequired
 };
 
 export default Note;

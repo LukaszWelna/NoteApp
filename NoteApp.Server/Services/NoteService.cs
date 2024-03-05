@@ -49,9 +49,8 @@ namespace NoteApp.Server.Services
 
         public async Task<int> CreateNoteAsync(CreateNoteDto createNoteDto)
         {
-            var loggedUserId = _userContextService.GetUserId.GetValueOrDefault();
             var note = _mapper.Map<Note>(createNoteDto);
-            note.UserId = loggedUserId;
+            note.UserId = _userContextService.GetUserId;
             await _dbContext.Notes.AddAsync(note);
             await _dbContext.SaveChangesAsync();
 

@@ -25,7 +25,10 @@ const Dashboard = () => {
         const getNotes = async () => {
             try {
                 const response = await axios.get('api/notes', {
-                    headers: { 'Authorization': `Bearer ${auth.accessToken}` }
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${auth.accessToken}`
+                    }
                 });
                 if (isMounted) {
                     setNotes(response?.data);
@@ -75,6 +78,8 @@ const Dashboard = () => {
                     setError(['No server response.']);
                 } else if (e.response.status === 400) {
                     setError('Bad request.');
+                } else if (e.response.status === 401) {
+                    setError('Unauthorized to add data to the database.')
                 } else {
                     setError(['Failed to save data in the database.']);
                 }
@@ -82,6 +87,46 @@ const Dashboard = () => {
         }
 
         addNote();
+
+        return () => {
+            isMounted = false;
+        }
+    }
+
+    // Delete note by id 
+    const handleDelete = (id) => {
+        let isMounted = true;
+
+        const deleteNote = async () => {
+
+            try {
+                const response = await axios.delete(`/api/notes/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${auth.accessToken}`
+                    }
+                });
+
+                if (isMounted) {
+                    setTrigger(!trigger);
+                }
+
+            } catch (e) {
+                if (!e?.response) {
+                    setError(['No server response.']);
+                } else if (e.response.status === 401) {
+                    setError('Unathorized to delete data from the database.')
+                } else if (e.response.status === 403) {
+                    setError('Access forbidden.')
+                } else if (e.response.status === 404) {
+                    setError('Note not found in the database.')
+                } else {
+                    setError(['Failed to delete data from the database.']);
+                }
+            }
+        }
+
+        deleteNote();
 
         return () => {
             isMounted = false;
@@ -97,16 +142,16 @@ const Dashboard = () => {
                     </MDBCol>
                 </MDBRow>
                 :
-            <div>
+                <div>
                     <MDBRow className='mx-2 mb-5 mt-3 row-cols-1 g-4 justify-content-center'>
                         <CreateArea handleAddNote={handleAddNote} />
                     </MDBRow>
                     <MDBRow className='mx-2 row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4'>
-                    {notes.map((note) => 
-                        <Note key={note.id} id={note.id} title={note.title} content={note.content} />
+                        {notes.map((note) =>
+                            <Note key={note.id} id={note.id} title={note.title} content={note.content} handleDelete={handleDelete} />
                         )}
-                            </MDBRow>
-                    </div>
+                     </MDBRow>
+                </div>
             }
         </div>
     );
