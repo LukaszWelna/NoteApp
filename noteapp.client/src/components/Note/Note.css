@@ -1,0 +1,22 @@
+.button-delete {
+    color: #332d2d;
+    background-color: white;
+    border: none;
+}
+
+.button-edit {
+    color: #332d2d;
+    background-color: white;
+    border: none;
+}
+
+.form-note {
+    height: 100%;
+    position: relative;
+}
+
+.note-icons {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}

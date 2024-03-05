@@ -69,7 +69,7 @@ const Home = () => {
     }, [loginEmail, loginPassword]);
 
     // handlers
-    async function handleLoginSubmit(event) {
+    const handleLoginSubmit = async (event) => {
         event.preventDefault();
         try {
             const response = await axios.post('/api/accounts/login',
@@ -84,16 +84,16 @@ const Home = () => {
             navigate('/dashboard');
         } catch (e) {
             if (!e?.response) {
-                setLoginErrorMessage(['No Server Response']);
+                setLoginErrorMessage(['No server response.']);
             } else if (e.response.status === 400) {
-                setLoginErrorMessage('Invalid email address or password');
+                setLoginErrorMessage('Invalid email address or password.');
             } else {
-                setLoginErrorMessage(['Login failed']);
+                setLoginErrorMessage(['Login failed.']);
             }
         }
     }
 
-    async function handleRegisterSubmit(event) {
+    const handleRegisterSubmit = async(event) => {
         event.preventDefault();
         try {
             const response = await axios.post('/api/accounts/register',
@@ -112,7 +112,7 @@ const Home = () => {
             navigate('/registered');
         } catch (e) {
             if (!e?.response) {
-                setRegisterErrorMessage(['No Server Response']);
+                setRegisterErrorMessage(['No server response.']);
             } else if (e.response.status === 400) {
                 const errorsData = e.response.data.errors;
                 const errors = [];
@@ -121,7 +121,7 @@ const Home = () => {
                 }) 
                 setRegisterErrorMessage(errors);
             } else {
-                setRegisterErrorMessage(['Registration failed']);
+                setRegisterErrorMessage(['Registration failed.']);
             }
         }
     }

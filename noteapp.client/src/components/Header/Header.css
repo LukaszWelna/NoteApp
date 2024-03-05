@@ -5,3 +5,9 @@
 .brand-name {
     font-size: 1.5rem;
 }
+
+.button-logout {
+    color: #332d2d;
+    background-color: #FFC107;
+    border: none;
+}

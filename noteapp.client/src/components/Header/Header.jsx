@@ -8,6 +8,7 @@ import {
 } from 'mdb-react-ui-kit';
 import useAuth from '../../hooks/UseAuth';
 import { Link } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Header = () => {
 
@@ -25,9 +26,9 @@ const Header = () => {
                     <MDBNavbarBrand tag="span" className='mb-0 h1 ms-3 brand-name'>Note app</MDBNavbarBrand>
                     {auth?.accessToken ? 
                         <Link to='/'>
-                            <MDBBtn color="dark" className='me-3' type='button' onClick={handleLogout}>
-                                Logout
-                            </MDBBtn>
+                            <button className='button-logout px-3' onClick={handleLogout}>
+                                <LogoutIcon />
+                            </button>
                         </Link>
                         : null
                     }
