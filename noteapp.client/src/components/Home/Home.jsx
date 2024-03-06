@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Home.css';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/UseAuth'
@@ -20,6 +20,8 @@ import {
     from 'mdb-react-ui-kit'
     
 const Home = () => {
+
+    const isMounted = useRef(false);
 
     const { setAuth } = useAuth();
     const navigate = useNavigate();
@@ -43,6 +45,15 @@ const Home = () => {
     const [loginErrorMessage, setLoginErrorMessage] = useState();
 
     // useEffect hooks
+    useEffect(() => {
+        isMounted.current = true;
+
+        return () => {
+            isMounted.current = false;
+        }
+
+    }, []);
+
     // Check if password is valid
     useEffect(() => {
         const isValid = (registerPassword.length >= 8) ? true : false;
@@ -77,18 +88,22 @@ const Home = () => {
                 {
                     headers: { 'Content-Type': 'application/json' }
                 });
-            const accessToken = response?.data;
-            setAuth({ accessToken });
-            setLoginEmail('');
-            setLoginPassword('');
-            navigate('/dashboard');
+            if (isMounted.current) {
+                const accessToken = response?.data;
+                setAuth({ accessToken });
+                setLoginEmail('');
+                setLoginPassword('');
+                navigate('/dashboard');
+            }
         } catch (e) {
-            if (!e?.response) {
-                setLoginErrorMessage(['No server response.']);
-            } else if (e.response.status === 400) {
-                setLoginErrorMessage('Invalid email address or password.');
-            } else {
-                setLoginErrorMessage(['Login failed.']);
+            if (isMounted.current) {
+                if (!e?.response) {
+                    setLoginErrorMessage(['No server response.']);
+                } else if (e.response.status === 400) {
+                    setLoginErrorMessage('Invalid email address or password.');
+                } else {
+                    setLoginErrorMessage(['Login failed.']);
+                }
             }
         }
     }
@@ -104,24 +119,28 @@ const Home = () => {
                 {
                     headers: { 'Content-Type': 'application/json' }
                 });
-            setRegisterFirstName('');
-            setRegisterLastName('');
-            setRegisterEmail('');
-            setRegisterPassword('');
-            setRegisterConfirmPassword('');
-            navigate('/registered');
+            if (isMounted.current) {
+                setRegisterFirstName('');
+                setRegisterLastName('');
+                setRegisterEmail('');
+                setRegisterPassword('');
+                setRegisterConfirmPassword('');
+                navigate('/registered');
+            }
         } catch (e) {
-            if (!e?.response) {
-                setRegisterErrorMessage(['No server response.']);
-            } else if (e.response.status === 400) {
-                const errorsData = e.response.data.errors;
-                const errors = [];
-                Object.keys(errorsData).forEach((key) => {
-                    errors.push(errorsData[key][0])
-                }) 
-                setRegisterErrorMessage(errors);
-            } else {
-                setRegisterErrorMessage(['Registration failed.']);
+            if (isMounted.current) {
+                if (!e?.response) {
+                    setRegisterErrorMessage(['No server response.']);
+                } else if (e.response.status === 400) {
+                    const errorsData = e.response.data.errors;
+                    const errors = [];
+                    Object.keys(errorsData).forEach((key) => {
+                        errors.push(errorsData[key][0])
+                    })
+                    setRegisterErrorMessage(errors);
+                } else {
+                    setRegisterErrorMessage(['Registration failed.']);
+                }
             }
         }
     }

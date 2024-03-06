@@ -2,3 +2,9 @@
     background: #eee;
     background-image: url("https://www.transparenttextures.com/patterns/white-tiles.png");
 }
+
+.App {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}

@@ -12,6 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Zoom from '@mui/material/Zoom';
 import propTypes from 'prop-types';
+import { useClickAway } from '@uidotdev/usehooks';
 
 function CreateArea(props) {
 
@@ -19,6 +20,10 @@ function CreateArea(props) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [expand, setExpand] = useState(false);
+
+    const ref = useClickAway(() => {
+        setExpand(false);
+    });
 
     // handlers
     const handleAddNote = (event) => {
@@ -29,7 +34,7 @@ function CreateArea(props) {
     }
 
     return (
-        <MDBCol className='px-2 col-create-area' sm='8' md='6' xl='4'>
+        <MDBCol className='px-2 col-create-area' sm='8' md='6' xl='4' ref={ref}>
             <MDBCard>
                 <MDBCardBody className='p-3'>
                     <form className='create-note' onSubmit={handleAddNote}>

@@ -1,18 +1,27 @@
-.button-delete {
+.button-delete, .button-edit {
     color: #332d2d;
     background-color: white;
     border: none;
 }
 
-.button-edit {
+.button-done {
     color: #332d2d;
-    background-color: white;
+    background-color: #FFFDE7;
     border: none;
 }
 
 .form-note {
     height: 100%;
     position: relative;
+}
+
+.form-note input,
+.form-note textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+
 }
 
 .note-icons {

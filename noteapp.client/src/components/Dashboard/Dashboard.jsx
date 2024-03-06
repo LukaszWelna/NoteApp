@@ -39,6 +39,8 @@ const Dashboard = () => {
                 if (isMounted) {
                     if (!e?.response) {
                         setError(['No server response.']);
+                    } else if (e.response.status === 401) {
+                        setError('Unathorized to get data from the database.')
                     } else {
                         setError(['Failed to fetch data from the database.']);
                     }
@@ -74,15 +76,17 @@ const Dashboard = () => {
                 }
 
             } catch (e) {
-                if (!e?.response) {
-                    setError(['No server response.']);
-                } else if (e.response.status === 400) {
-                    setError('Bad request.');
-                } else if (e.response.status === 401) {
-                    setError('Unauthorized to add data to the database.')
-                } else {
-                    setError(['Failed to save data in the database.']);
-                }
+                if (isMounted) {
+                    if (!e?.response) {
+                        setError(['No server response.']);
+                    } else if (e.response.status === 400) {
+                        setError('Bad request.');
+                    } else if (e.response.status === 401) {
+                        setError('Unauthorized to add data to the database.')
+                    } else {
+                        setError(['Failed to save data in the database.']);
+                    }
+                } 
             }
         }
 
@@ -112,16 +116,18 @@ const Dashboard = () => {
                 }
 
             } catch (e) {
-                if (!e?.response) {
-                    setError(['No server response.']);
-                } else if (e.response.status === 401) {
-                    setError('Unathorized to delete data from the database.')
-                } else if (e.response.status === 403) {
-                    setError('Access forbidden.')
-                } else if (e.response.status === 404) {
-                    setError('Note not found in the database.')
-                } else {
-                    setError(['Failed to delete data from the database.']);
+                if (isMounted) {
+                    if (!e?.response) {
+                        setError(['No server response.']);
+                    } else if (e.response.status === 401) {
+                        setError('Unathorized to delete data from the database.')
+                    } else if (e.response.status === 403) {
+                        setError('Access forbidden.')
+                    } else if (e.response.status === 404) {
+                        setError('Note not found in the database.')
+                    } else {
+                        setError(['Failed to delete data from the database.']);
+                    }
                 }
             }
         }
@@ -131,6 +137,48 @@ const Dashboard = () => {
         return () => {
             isMounted = false;
         }
+    }
+
+    // Edit note by id
+    const handleEdit = (id, title, content) => {
+        let isMounted = true;
+
+        const editNote = async () => {
+            try {
+                const response = await axios.put(`/api/notes/${id}`,
+                    JSON.stringify({ Title: title, Content: content }),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${auth.accessToken}`
+                        }
+                    });
+
+                if (isMounted) {
+                    setTrigger(!trigger);
+                }
+
+            } catch (e) {
+                if (isMounted) {
+                    if (!e?.response) {
+                        setError(['No server response.']);
+                    } else if (e.response.status === 400) {
+                        setError('Bad request.');
+                    } else if (e.response.status === 401) {
+                        setError('Unauthorized to edit data in the database.')
+                    } else {
+                        setError(['Failed to edit data in the database.']);
+                    }
+                }
+            }
+        }
+
+        editNote();
+
+        return () => {
+            isMounted = false;
+        }
+
     }
 
     return (
@@ -148,7 +196,8 @@ const Dashboard = () => {
                     </MDBRow>
                     <MDBRow className='mx-2 row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4'>
                         {notes.map((note) =>
-                            <Note key={note.id} id={note.id} title={note.title} content={note.content} handleDelete={handleDelete} />
+                            <Note key={note.id} id={note.id} title={note.title} content={note.content}
+                                handleDelete={handleDelete} handleEdit={handleEdit} />
                         )}
                      </MDBRow>
                 </div>
