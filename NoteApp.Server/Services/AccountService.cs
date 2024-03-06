@@ -11,6 +11,7 @@ using System.Text;
 
 namespace NoteApp.Server.Services
 {
+    // Account service interface
     public interface IAccountService
     {
         public Task RegisterUserAsync(RegisterUserDto registerUserDto);
@@ -32,6 +33,7 @@ namespace NoteApp.Server.Services
             _authenticationSettings = authenticationSettings;
         }
 
+        // HTTP Post - register new user
         public async Task RegisterUserAsync(RegisterUserDto registerUserDto)
         {
             var user = _mapper.Map<User>(registerUserDto);
@@ -39,8 +41,9 @@ namespace NoteApp.Server.Services
 
             await _dbContext.AddAsync(user);
             await _dbContext.SaveChangesAsync();
-        }        
-        
+        }
+
+        // HTTP Post - login user and return token
         public async Task<string> LoginAsync(LoginUserDto loginUserDto)
         {
             var user = await _dbContext.Users
@@ -74,9 +77,9 @@ namespace NoteApp.Server.Services
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var test = tokenHandler.WriteToken(token);
+            var newToken = tokenHandler.WriteToken(token);
 
-            return test;
+            return newToken;
         }
     }
 }

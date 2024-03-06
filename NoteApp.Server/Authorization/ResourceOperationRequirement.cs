@@ -2,6 +2,7 @@
 
 namespace NoteApp.Server.Authorization
 {
+    // Operations on database
     public enum ResourceOperation
     {
         Create,

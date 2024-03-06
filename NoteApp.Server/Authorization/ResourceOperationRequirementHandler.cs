@@ -9,11 +9,13 @@ namespace NoteApp.Server.Authorization
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, 
             ResourceOperationRequirement requirement, Note resource)
         {
+            // Check get and create operations
             if (requirement.ResourceOperation == ResourceOperation.Create || requirement.ResourceOperation == ResourceOperation.Read)
             {
                 context.Succeed(requirement);
             }
 
+            // Check Update and delete operations
             var loggedUserId = int.Parse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
             if (loggedUserId == resource.UserId)

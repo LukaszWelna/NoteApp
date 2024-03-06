@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\api\" />
+    <Folder Include="src\assets\" />
     <Folder Include="src\components\Registered\" />
   </ItemGroup>
 </Project>

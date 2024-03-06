@@ -2,6 +2,7 @@
 
 namespace NoteApp.Server.Middleware
 {
+    // Log too long time of requests
     public class RequestTimeMiddleware : IMiddleware
     {
         private readonly ILogger<RequestTimeMiddleware> _logger;

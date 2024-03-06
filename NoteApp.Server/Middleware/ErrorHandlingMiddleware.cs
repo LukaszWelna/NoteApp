@@ -12,6 +12,7 @@ namespace NoteApp.Server.Middleware
             _logger = logger;
         }
 
+        // Manage exceptions
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try

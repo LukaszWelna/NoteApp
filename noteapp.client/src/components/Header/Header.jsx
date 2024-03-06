@@ -3,8 +3,7 @@ import './Header.css';
 import {
     MDBNavbar,
     MDBContainer,
-    MDBNavbarBrand,
-    MDBBtn
+    MDBNavbarBrand
 } from 'mdb-react-ui-kit';
 import useAuth from '../../hooks/UseAuth';
 import { Link } from 'react-router-dom';
@@ -14,7 +13,7 @@ const Header = () => {
 
     const { auth, setAuth } = useAuth();
 
-    // remove token
+    // Remove token
     const handleLogout = () => {
         setAuth({});
     }

@@ -4,8 +4,7 @@ import {
     MDBContainer,
     MDBRow,
     MDBCol
-}
-    from 'mdb-react-ui-kit'
+} from 'mdb-react-ui-kit'
 
 const Missing = () => {
     return (

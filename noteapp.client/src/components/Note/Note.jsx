@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './Note.css';
 import PropTypes from 'prop-types';
 import {
@@ -25,6 +25,18 @@ function Note(props) {
         setTitle(props.title);
         setContent(props.content);
     });
+
+    // Resizable textarea
+    const textAreaRef = useRef(null);
+
+    const resizeTextArea = () => {
+        textAreaRef.current.style.height = 'auto';
+        textAreaRef.current.style.height = textAreaRef.current.scrollHeight + "px";
+    }
+
+    useEffect(() => {
+        resizeTextArea();
+    }, [content]);
 
     // Handlers
     const handleModify = (event) => {
@@ -64,7 +76,7 @@ function Note(props) {
                                 style={modify ? modifyStyle : normalStyle} />
                         </MDBCardTitle>
                         <MDBCardText className='mb-4'>
-                            <textarea placeholder='Content' id='form-modify-content' rows='3'
+                            <textarea ref={textAreaRef} placeholder='Content' id='form-modify-content' 
                                 onChange={(e) => setContent(e.target.value)} value={content}
                                 maxLength='400' disabled={modify ? false : true}
                                 style={modify ? modifyStyle : normalStyle} />
