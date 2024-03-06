@@ -62,7 +62,7 @@ const Dashboard = () => {
 
         const addNote = async () => {
             try {
-                const response = await axios.post('/api/notes',
+                await axios.post('/api/notes',
                     JSON.stringify({ Title: title, Content: content }),
                     {
                         headers: {
@@ -104,7 +104,7 @@ const Dashboard = () => {
         const deleteNote = async () => {
 
             try {
-                const response = await axios.delete(`/api/notes/${id}`, {
+                await axios.delete(`/api/notes/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${auth.accessToken}`
@@ -145,7 +145,7 @@ const Dashboard = () => {
 
         const editNote = async () => {
             try {
-                const response = await axios.put(`/api/notes/${id}`,
+                await axios.put(`/api/notes/${id}`,
                     JSON.stringify({ Title: title, Content: content }),
                     {
                         headers: {
@@ -178,7 +178,6 @@ const Dashboard = () => {
         return () => {
             isMounted = false;
         }
-
     }
 
     return (

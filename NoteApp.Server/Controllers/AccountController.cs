@@ -5,6 +5,7 @@ using NoteApp.Server.Services;
 
 namespace NoteApp.Server.Controllers
 {
+    // Accounts management 
     [ApiController]
     [Route("api/accounts")]
     public class AccountController : ControllerBase
@@ -16,6 +17,7 @@ namespace NoteApp.Server.Controllers
             _service = service;
         }
 
+        // Register new account
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUserAsync([FromBody] RegisterUserDto registerUserDto)
         {
@@ -24,6 +26,7 @@ namespace NoteApp.Server.Controllers
             return Ok();
         }
 
+        // Login and send token
         [HttpPost("login")]
         public async Task<ActionResult> LoginAsync([FromBody] LoginUserDto loginUserDto)
         {

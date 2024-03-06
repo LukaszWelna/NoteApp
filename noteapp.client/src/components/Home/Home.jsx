@@ -26,11 +26,11 @@ const Home = () => {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
     
-    // login useState hooks
+    // Login useState hooks
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
 
-    // register useState hooks
+    // Register useState hooks
     const [registerFirstName, setRegisterFirstName] = useState('');
     const [registerLastName, setRegisterLastName] = useState('');
     const [registerEmail, setRegisterEmail] = useState('');
@@ -79,7 +79,7 @@ const Home = () => {
         setLoginErrorMessage('');
     }, [loginEmail, loginPassword]);
 
-    // handlers
+    // Handlers
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -111,7 +111,7 @@ const Home = () => {
     const handleRegisterSubmit = async(event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('/api/accounts/register',
+            await axios.post('/api/accounts/register',
                 JSON.stringify({
                     FirstName: registerFirstName, LastName: registerLastName,
                     Email: registerEmail, Password: registerPassword, ConfirmPassword: registerConfirmPassword

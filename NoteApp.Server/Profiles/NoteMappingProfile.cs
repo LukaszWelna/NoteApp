@@ -4,6 +4,7 @@ using NoteApp.Server.Models;
 
 namespace NoteApp.Server.Profiles
 {
+    // Automapper - profiles
     public class NoteMappingProfile : Profile
     {
         public NoteMappingProfile()

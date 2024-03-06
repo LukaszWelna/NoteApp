@@ -2,6 +2,7 @@
 
 namespace NoteApp.Server.Services
 {
+    // User context 
     public interface IUserContextService
     {
         public ClaimsPrincipal User { get; }

@@ -1,5 +1,6 @@
 ﻿namespace NoteApp.Server
 {
+    // Jwt authentication settings
     public class AuthenticationSettings
     {
         public string JwtKey { get; set; }

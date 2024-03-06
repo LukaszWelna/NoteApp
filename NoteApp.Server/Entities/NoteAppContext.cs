@@ -8,9 +8,12 @@ namespace NoteApp.Server.Entities
         {
             
         }
+
+        // Define DbSets
         public DbSet<User> Users { get; set; }
         public DbSet<Note> Notes { get; set; }
 
+        // Define properties
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(eb =>

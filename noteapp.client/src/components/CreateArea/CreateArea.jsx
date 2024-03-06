@@ -11,7 +11,6 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Zoom from '@mui/material/Zoom';
-import propTypes from 'prop-types';
 import { useClickAway } from '@uidotdev/usehooks';
 
 function CreateArea(props) {
@@ -25,7 +24,7 @@ function CreateArea(props) {
         setExpand(false);
     });
 
-    // handlers
+    // Handlers
     const handleAddNote = (event) => {
         event.preventDefault();
         props.handleAddNote(title, content);

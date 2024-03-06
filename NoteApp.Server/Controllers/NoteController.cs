@@ -8,6 +8,7 @@ using System.Security.Claims;
 
 namespace NoteApp.Server.Controllers
 {
+    // Notes management
     [ApiController]
     [Route("api/notes")]
     [Authorize]
@@ -19,6 +20,7 @@ namespace NoteApp.Server.Controllers
             _service = service;
         }
 
+        // Get all notes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NoteDto>>> GetAllAsync()
         {
@@ -27,6 +29,7 @@ namespace NoteApp.Server.Controllers
             return Ok(notesDtos);
         }
 
+        // Create new note
         [HttpPost]
         public async Task<ActionResult> CreateNoteAsync([FromBody] CreateNoteDto createNoteDto)
         {
@@ -35,6 +38,7 @@ namespace NoteApp.Server.Controllers
             return Created($"/api/notes/{noteId}", null);
         }
 
+        // Delete note by id
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNoteByIdAsync([FromRoute] int id)
         {
@@ -43,6 +47,7 @@ namespace NoteApp.Server.Controllers
             return NoContent();
         }
 
+        // Update note by id
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateNoteByIdAsync([FromRoute] int id, 
             [FromBody] UpdateNoteDto updateNoteDto)

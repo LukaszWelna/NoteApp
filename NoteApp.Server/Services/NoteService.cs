@@ -11,6 +11,7 @@ using static Azure.Core.HttpHeader;
 
 namespace NoteApp.Server.Services
 {
+    // Note service interface
     public interface INoteService
     {
         public Task<IEnumerable<NoteDto>> GetAllAsync();
@@ -35,6 +36,7 @@ namespace NoteApp.Server.Services
             _userContextService = userContextService;
         }
         
+        // HTTP Get - get all notes
         public async Task<IEnumerable<NoteDto>> GetAllAsync()
         {
             var notes = await _dbContext
@@ -47,6 +49,7 @@ namespace NoteApp.Server.Services
             return notesDtos;
         }
 
+        // HTTP Post - create new note
         public async Task<int> CreateNoteAsync(CreateNoteDto createNoteDto)
         {
             var note = _mapper.Map<Note>(createNoteDto);
@@ -57,6 +60,7 @@ namespace NoteApp.Server.Services
             return note.Id;
         }
 
+        // HTTP Delete - delete note by id
         public async Task DeleteNoteByIdAsync(int id)
         {
             _logger.LogWarning($"DELETE action invoked on note with id: {id}");
@@ -82,6 +86,7 @@ namespace NoteApp.Server.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        // HTTP Put - update note by id
         public async Task UpdateNoteByIdAsync(int id, UpdateNoteDto updateNoteDto)
         {
             var note = await _dbContext

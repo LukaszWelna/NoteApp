@@ -3,6 +3,7 @@ using NoteApp.Server.Entities;
 
 namespace NoteApp.Server.Models.Validators
 {
+    // Custom validations of RegisterUserDto
     public class RegisterUserDtoValidator : AbstractValidator<RegisterUserDto>
     {
         public RegisterUserDtoValidator(NoteAppContext dbContext)
@@ -42,7 +43,7 @@ namespace NoteApp.Server.Models.Validators
 
                     if (emailTaken)
                     {
-                        context.AddFailure("Email", "The Email address is already taken");
+                        context.AddFailure("Email", "The Email address is already taken.");
                     }
                 });
             
