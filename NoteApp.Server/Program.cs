@@ -34,7 +34,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = "Bearer";
 }).AddJwtBearer(cfg =>
 {
-    cfg.RequireHttpsMetadata = true;
+    cfg.RequireHttpsMetadata = false;
     cfg.SaveToken = true;
     cfg.TokenValidationParameters = new TokenValidationParameters
     {
@@ -99,7 +99,6 @@ if (pendingMigrations.Any())
 app.UseMiddleware<RequestTimeMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthentication();
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
