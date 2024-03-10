@@ -14,7 +14,7 @@ export default defineConfig({
         host: '0.0.0.0',
         proxy: {
             '^/api/notes': {
-                target: 'https://localhost:7085/',
+                target: 'http://localhost:5082/',
                 secure: false
             }
         },
