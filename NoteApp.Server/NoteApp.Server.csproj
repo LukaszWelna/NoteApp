@@ -5,9 +5,9 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>false</InvariantGlobalization>
-    <SpaRoot>..\noteapp.client</SpaRoot>
-    <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
-    <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
+    <!-- <SpaRoot>..\noteapp.client</SpaRoot> -->
+	<!--<SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand> -->
+	<!-- <SpaProxyServerUrl>http://localhost:5173</SpaProxyServerUrl> -->
   </PropertyGroup>
 
   <ItemGroup>
