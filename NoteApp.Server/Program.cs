@@ -34,7 +34,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = "Bearer";
 }).AddJwtBearer(cfg =>
 {
-    cfg.RequireHttpsMetadata = false;
+    cfg.RequireHttpsMetadata = true;
     cfg.SaveToken = true;
     cfg.TokenValidationParameters = new TokenValidationParameters
     {
@@ -73,8 +73,9 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-//app.UseDefaultFiles();
-//app.UseStaticFiles();
+app.UseHttpsRedirection();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseCors("FrontEndClient");
 
 // Configure the HTTP request pipeline
@@ -101,6 +102,6 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-//app.MapFallbackToFile("/index.html");
+app.MapFallbackToFile("/index.html");
 
 app.Run();
