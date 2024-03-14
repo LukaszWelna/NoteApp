@@ -91,10 +91,13 @@ if (app.Environment.IsDevelopment())
 using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetService<NoteAppContext>();
 
-var pendingMigrations = dbContext.Database.GetPendingMigrations();
-if (pendingMigrations.Any())
+if (dbContext.Database.IsRelational())
 {
-    dbContext.Database.Migrate();
+    var pendingMigrations = dbContext.Database.GetPendingMigrations();
+    if (pendingMigrations.Any())
+    {
+        dbContext.Database.Migrate();
+    }
 }
 
 app.UseMiddleware<RequestTimeMiddleware>();
@@ -105,3 +108,6 @@ app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
 app.Run();
+
+// Define as public - integration tests
+public partial class Program { }
