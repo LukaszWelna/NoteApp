@@ -13,16 +13,17 @@ namespace NoteApp.IntegrationTests
     public class NoteControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private readonly HttpClient _httpClient;
+        private readonly WebApplicationFactory<Program> _factory;
         public NoteControllerTests(WebApplicationFactory<Program> factory)
         {
-            _httpClient = factory
+            _factory = factory
                 .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureServices(services =>
                     {
                         var dbContextOptions = services
                             .SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<NoteAppContext>));
-                       
+
                         services.Remove(dbContextOptions);
 
                         services
@@ -31,8 +32,9 @@ namespace NoteApp.IntegrationTests
                         services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
                         services.AddMvc(options => options.Filters.Add(new FakeUserFilter()));
                     });
-                })
-                .CreateClient();
+                });
+                
+            _httpClient = _factory.CreateClient();
         }
 
         [Fact]
@@ -84,6 +86,68 @@ namespace NoteApp.IntegrationTests
 
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task DeleteNoteByIdAsync_ForNonExistingNote_ReturnsNotFoundStatus()
+        {
+            // Arrange
+
+            // Act
+            var response = await _httpClient.DeleteAsync("/api/notes/1000");
+
+            // Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+
+        private void SeedNote(Note note)
+        {
+            var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<NoteAppContext>();
+
+            _dbContext.Notes.Add(note);
+            _dbContext.SaveChanges();
+        }
+
+        [Fact]
+        public async Task DeleteNoteByIdAsync_ForValidaData_ReturnsNoContent()
+        {
+            // Arrange
+            var note = new Note
+            {
+                Title = "Test title",
+                UserId = 1
+            };
+
+            // Seed
+            SeedNote(note);
+
+            // Act
+            var response = await _httpClient.DeleteAsync("/api/notes/" + note.Id);
+
+            // Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task DeleteNoteByIdAsync_ForNonNoteOwner_ReturnsForbiddenStatus()
+        {
+            // Arrange
+            var note = new Note
+            {
+                Title = "Test title",
+                UserId = 1000
+            };
+
+            // Seed
+            SeedNote(note);
+
+            // Act
+            var response = await _httpClient.DeleteAsync("/api/notes/" + note.Id);
+
+            // Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
         }
 
     }
