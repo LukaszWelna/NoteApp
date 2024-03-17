@@ -14,6 +14,8 @@ namespace NoteApp.IntegrationTests
     {
         private readonly HttpClient _httpClient;
         private readonly WebApplicationFactory<Program> _factory;
+
+        // Prepare WebAPI for tests
         public NoteControllerTests(WebApplicationFactory<Program> factory)
         {
             _factory = factory
@@ -24,7 +26,10 @@ namespace NoteApp.IntegrationTests
                         var dbContextOptions = services
                             .SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<NoteAppContext>));
 
-                        services.Remove(dbContextOptions);
+                        if (dbContextOptions != null)
+                        {
+                            services.Remove(dbContextOptions);
+                        }
 
                         services
                             .AddDbContext<NoteAppContext>(options => options.UseInMemoryDatabase("NoteAppDb"));
@@ -53,7 +58,7 @@ namespace NoteApp.IntegrationTests
         public async Task CreateNoteAsync_WithValidModel_ReturnsCreatedStatus()
         {
             // Arrange 
-            var note = new CreateNoteDto
+            var note = new CreateNoteDto()
             {
                 Title = "Test title",
                 Content = "Test content"
@@ -103,18 +108,18 @@ namespace NoteApp.IntegrationTests
         private void SeedNote(Note note)
         {
             var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var _dbContext = scope.ServiceProvider.GetService<NoteAppContext>();
+            using var scope = scopeFactory?.CreateScope();
+            var _dbContext = scope?.ServiceProvider.GetService<NoteAppContext>();
 
-            _dbContext.Notes.Add(note);
-            _dbContext.SaveChanges();
+            _dbContext?.Notes.Add(note);
+            _dbContext?.SaveChanges();
         }
 
         [Fact]
-        public async Task DeleteNoteByIdAsync_ForValidaData_ReturnsNoContent()
+        public async Task DeleteNoteByIdAsync_ForExistingNote_ReturnsNoContentStatus()
         {
             // Arrange
-            var note = new Note
+            var note = new Note()
             {
                 Title = "Test title",
                 UserId = 1
@@ -134,7 +139,7 @@ namespace NoteApp.IntegrationTests
         public async Task DeleteNoteByIdAsync_ForNonNoteOwner_ReturnsForbiddenStatus()
         {
             // Arrange
-            var note = new Note
+            var note = new Note()
             {
                 Title = "Test title",
                 UserId = 1000
@@ -150,5 +155,79 @@ namespace NoteApp.IntegrationTests
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
         }
 
+        [Fact]
+        public async Task UpdateNoteByIdAsync_ForNonExistingNote_ReturnsNotFoundStatus()
+        {
+            // Arrange
+            var updatedNote = new Note()
+            {
+                Title = "Updated title",
+                Content = "Updated content"
+            };
+
+            var httpContent = updatedNote.ToJsonHttpContent();
+
+            // Act 
+            var response = await _httpClient.PutAsync("api/notes/1000", httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task UpdateNoteByIdAsync_ForExistingNote_ReturnsNoContentStatus()
+        {
+            // Arrange
+            var updatedNote = new Note()
+            {
+                Title = "Updated title",
+                Content = "Updated content"
+            };
+
+            var noteToSeed = new Note()
+            {
+                Title = "Test title",
+                Content = "Test content",
+                UserId = 1
+            };
+
+            SeedNote(noteToSeed);
+
+            var httpContent = updatedNote.ToJsonHttpContent();
+
+            // Act 
+            var response = await _httpClient.PutAsync("api/notes/" + noteToSeed.Id, httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task UpdateNoteByIdAsync_ForNonNoteOwner_ReturnsForbiddenStatus()
+        {
+            // Arrange
+            var updatedNote = new Note()
+            {
+                Title = "Updated title",
+                Content = "Updated content"
+            };
+
+            var noteToSeed = new Note()
+            {
+                Title = "Test title",
+                Content = "Test content",
+                UserId = 1000
+            };
+
+            SeedNote(noteToSeed);
+
+            var httpContent = updatedNote.ToJsonHttpContent();
+
+            // Act 
+            var response = await _httpClient.PutAsync("api/notes/" + noteToSeed.Id, httpContent);
+
+            // Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+        }
     }
 }
