@@ -9,6 +9,7 @@ namespace NoteApp.IntegrationTests
         {
             var claimsPrincipal = new ClaimsPrincipal();
 
+            // Seed user with id 1
             claimsPrincipal.AddIdentity(new ClaimsIdentity(
                 new[]
                 {
